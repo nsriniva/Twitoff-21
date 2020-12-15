@@ -1,9 +1,11 @@
 """SQLAlchemy models and utility functions for Twitoff"""
 
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 DB = SQLAlchemy()
 
+migrate = Migrate()
 
 # User Table (in relational database the table is "user")
 class User(DB.Model):
