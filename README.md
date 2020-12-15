@@ -46,15 +46,20 @@ FLASK_APP=twitoff flask db migrate #> creates the db (with "alembic_version" tab
 FLASK_APP=twitoff flask db upgrade #> creates the specified tables
 ```
 
-## Configuration
+### Configuring Environment Variables
 
-Obtain [Twitter API Keys](https://developer.twitter.com), then configure environment variables accordingly:
+Create a new file called ".env".
+
+Obtain [Twitter API Keys](https://developer.twitter.com), then configure environment variables in the ".env" file accordingly:
 
 ```sh
-# first, make a copy of the example env vars:
-cp dotenv .env
+# the ".env" file
 
-# remember to update the ".env" file with your own Twitter API keys!
+ENV="development"
+DATABASE_URL="sqlite:///db.sqlite3"
+
+TWITTER_API_KEY="______________"
+TWITTER_API_KEY_SECRET="__________"
 ```
 
 ## Usage

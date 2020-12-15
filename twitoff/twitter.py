@@ -1,20 +1,19 @@
 """Retrieve Tweets, embeddings, and push to our database"""
 from os import getenv
+from dotenv import load_dotenv
 import tweepy  # to interact with the twitter API
 import spacy  # will use later
 from .models import DB, Tweet, User
 
+load_dotenv() # actually load the env vars :-D
 
-TWITTER_AUTH = tweepy.OAuthHandler(
-    getenv("TWITTER_API_KEY"), getenv("TWITTER_API_KEY_SECRET"))
+TWITTER_AUTH = tweepy.OAuthHandler(getenv("TWITTER_API_KEY"), getenv("TWITTER_API_KEY_SECRET"))
 TWITTER = tweepy.API(TWITTER_AUTH)
 
 nlp = spacy.load("my_model")
 
-
 def vectorize_tweet(tweet_text):
     return nlp(tweet_text).vector
-
 
 def add_or_update_user(username):
     try:
@@ -25,16 +24,14 @@ def add_or_update_user(username):
         DB.session.add(db_user)
 
         # TODO - fix assumption on continuously new tweets
-        tweets = twitter_user.timeline(
-            count=200, exclude_replies=True, include_rts=False, tweet_mode="extended")
+        tweets = twitter_user.timeline(count=200, exclude_replies=True, include_rts=False, tweet_mode="extended")
 
         if tweets:
             db_user.newest_tweet_id = tweets[0].id
 
         for tweet in tweets:
             vectorized_tweet = vectorize_tweet(tweet.full_text)
-            db_tweet = Tweet(id=tweet.id, text=tweet.full_text,
-                             vect=vectorized_tweet)
+            db_tweet = Tweet(id=tweet.id, text=tweet.full_text, vect=vectorized_tweet)
             db_user.tweets.append(db_tweet)
             DB.session.add(db_tweet)
 

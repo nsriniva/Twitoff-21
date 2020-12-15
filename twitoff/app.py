@@ -1,10 +1,12 @@
 """Main app/routing file for Twitoff"""
 
 from os import getenv
+from dotenv import load_dotenv
 from flask import Flask, render_template
 from .twitter import add_or_update_user
 from .models import DB, User, Tweet, migrate
 
+load_dotenv() # actually load the env vars :-D
 
 def create_app():
     app = Flask(__name__)
@@ -25,6 +27,7 @@ def create_app():
     @app.route("/update")
     def update():
         add_or_update_user("elonmusk")
+        print("HELLO")
         return render_template("base.html", title="Home", users=User.query.all())
 
     @app.route("/reset")
