@@ -9,6 +9,9 @@ verify_ssl = true
 flask = "*"
 flask-sqlalchemy = "*"
 jinja2 = "*"
+tweepy = "*"
+spacy = "*"
+python-dotenv = "*"
 
 [requires]
 python_version = "3.8"

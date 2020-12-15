@@ -12,6 +12,8 @@ class User(DB.Model):
     id = DB.Column(DB.BigInteger, primary_key=True)
     # name column
     name = DB.Column(DB.String, nullable=False)
+    # keeps track of users most recent tweet
+    newest_tweet_id = DB.Column(DB.BigInteger)
 
     def __repr__(self):
         return "<User: {}>".format(self.name)
@@ -24,6 +26,7 @@ class Tweet(DB.Model):
     id = DB.Column(DB.BigInteger, primary_key=True)
     # text column of character length 300 (unicode)
     text = DB.Column(DB.Unicode(300))
+    vect = DB.Column(DB.PickleType, nullable=False)
     # foreign key - user.id
     user_id = DB.Column(DB.BigInteger, DB.ForeignKey(
         'user.id'), nullable=False)
@@ -31,12 +34,3 @@ class Tweet(DB.Model):
 
     def __repr__(self):
         return "<Tweet: {}>".format(self.text)
-
-
-def insert_example_users():
-    """Will get error if ran twice since data already exist"""
-    nick = User(id=1, name="nwdelafu")
-    elonmusk = User(id=2, name="elonmusk")
-    DB.session.add(nick)  # adds nick User
-    DB.session.add(elonmusk)  # adds elon User
-    DB.session.commit()  # commits all
