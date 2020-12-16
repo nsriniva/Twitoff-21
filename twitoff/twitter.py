@@ -31,7 +31,7 @@ def add_or_update_user(screen_name):
         # get existing tweet from the db or initialize a new one:
         db_tweet = Tweet.query.get(status.id) or Tweet(id=status.id)
         db_tweet.user_id = status.author.id # or db_user.id
-        db_tweet.text = status.full_text
+        db_tweet.text = status.full_text[0:300] # truncate here, OR change Tweet model column definition to hold more chars
         db_tweet.vect = vectorize_tweet(status.full_text)
         DB.session.add(db_tweet)
 

@@ -61,7 +61,11 @@ git push heroku main
 # git push heroku my-branch:main
 ```
 
+## Testing the Model Download
 
+```sh
+heroku run "python -m twitoff.nlp_helper"
+```
 
 ## Database Management
 
@@ -74,8 +78,35 @@ heroku addons:create heroku-postgresql:hobby-dev
 Migrate the database (need to deploy first, to reference our app code):
 
 ```sh
-heroku run "FLASK_APP=web_app flask db init"
-#heroku run "FLASK_APP=web_app flask db stamp head"
-heroku run "FLASK_APP=web_app flask db migrate"
-heroku run "FLASK_APP=web_app flask db upgrade"
+heroku run "FLASK_APP=twitoff flask db init"
+#heroku run "FLASK_APP=twitoff flask db stamp head"
+heroku run "FLASK_APP=twitoff flask db migrate"
+heroku run "FLASK_APP=twitoff flask db upgrade"
 ```
+
+
+```sh
+heroku run bash
+
+FLASK_APP=twitoff flask db init #> generates app/migrations dir
+FLASK_APP=twitoff flask db migrate #> creates the db (with "alembic_version" table)
+FLASK_APP=twitoff flask db upgrade #> creates the specified tables
+```
+
+## Viewing
+
+```sh
+heroku open
+```
+
+## Logs
+
+```sh
+heroku logs --tail
+```
+
+
+
+Errs:
+
+"psycopg2.errors.StringDataRightTruncation: value too long for type character varying(300)"
