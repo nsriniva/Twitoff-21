@@ -2,7 +2,7 @@
 
 from os import getenv
 from dotenv import load_dotenv
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template, redirect, request
 from .twitter import add_or_update_user
 from .models import DB, User, Tweet, migrate
 
@@ -49,6 +49,7 @@ def create_app():
         return redirect("/")
 
     #@app.route("/update/<screen_name>")
+    #@app.route("/users/<screen_name>/update")
     #def update(screen_name=None):
     #    print("UPDATING USER:", screen_name)
     #    db_user, db_tweets = add_or_update_user(screen_name)
@@ -59,5 +60,31 @@ def create_app():
         print("SHOW USER:", screen_name)
         user = User.query.filter_by(name=screen_name).one()
         return render_template("user.html", user=user, tweets=user.tweets)
+
+    #
+    # PREDICTION ROUTES
+    #
+
+    @app.route("/predictions/new", methods=["GET"])
+    def prediction_form():
+        return render_template("prediction_form.html")
+
+    @app.route("/predictions/create", methods=["POST"])
+    def predict():
+        print("PREDICT ROUTE...")
+        print("FORM DATA:", dict(request.form))
+        #> {'screen_name_a': 'elonmusk', 'screen_name_b': 's2t2', 'tweet_text': 'Example tweet text here'}
+        screen_name_a = request.form["screen_name_a"]
+        screen_name_b = request.form["screen_name_b"]
+        tweet_text = request.form["tweet_text"]
+
+        most_likely = "TODO" # TODO: make a prediction
+
+        return render_template("prediction_results.html",
+            screen_name_a=screen_name_a,
+            screen_name_b=screen_name_b,
+            tweet_text=tweet_text,
+            screen_name_most_likely=most_likely
+        )
 
     return app
