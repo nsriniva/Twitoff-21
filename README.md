@@ -37,7 +37,7 @@ python -m spacy download en_core_web_sm
 Using the [`Flask-Migrate` package](https://flask-migrate.readthedocs.io/en/latest/) to simplify database creation and migration:
 
 ```sh
-#pipenv install Flask-Migrate
+#pipenv install Flask-Migrate # (first time only, afterwards this should be in the Pipfile)
 ```
 
 ```sh

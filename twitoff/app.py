@@ -16,24 +16,45 @@ def create_app():
     DB.init_app(app)
     migrate.init_app(app, DB)
 
-    # TODO - make rest of application
-
-    @app.route('/')
-    def root():
-        # SQL equivalent = "SELECT * FROM user;"
-        users = User.query.all()
-        return render_template('base.html', title="Home", users=users)
-
-    @app.route("/update")
-    def update():
-        add_or_update_user("elonmusk")
-        print("HELLO")
-        return render_template("base.html", title="Home", users=User.query.all())
+    #
+    # ADMIN ROUTES
+    #
 
     @app.route("/reset")
     def reset():
         DB.drop_all()
         DB.create_all()
         return render_template("base.html", title="Home")
+
+    #
+    # USER ROUTES
+    #
+
+    @app.route('/')
+    def root():
+        # SQL equivalent = "SELECT * FROM user;"
+        return render_template("base.html", title="Home", users=User.query.all())
+
+    @app.route("/update")
+    def update_all():
+        # consider moving this logic into our twitter module. we want to keep these routes "skinny"
+        print("SEEDING USERS...")
+        EXAMPLE_USERS = ["elonmusk", "justinbieber", "s2t2"]
+        for screen_name in EXAMPLE_USERS:
+            print(screen_name)
+            add_or_update_user(screen_name)
+        return render_template("base.html", title="Home", users=User.query.all())
+
+    #@app.route("/update/<screen_name>")
+    #def update(screen_name=None):
+    #    print("UPDATING USER:", screen_name)
+    #    db_user, db_tweets = add_or_update_user(screen_name)
+    #    return render_template("base.html", title="Home", users=User.query.all())
+
+    @app.route("/users/<screen_name>")
+    def show(screen_name=None):
+        print("SHOW USER:", screen_name)
+        user = User.query.filter_by(name=screen_name).one()
+        return render_template("user.html", user=user, tweets=user.tweets)
 
     return app

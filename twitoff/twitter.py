@@ -15,29 +15,29 @@ nlp = spacy.load("my_model")
 def vectorize_tweet(tweet_text):
     return nlp(tweet_text).vector
 
-def add_or_update_user(username):
-    try:
-        """Adds user with username 'username' to our database"""
-        twitter_user = TWITTER.get_user(username)
-        db_user = (User.query.get(twitter_user.id)) or User(
-            id=twitter_user.id, name=username)
-        DB.session.add(db_user)
+def add_or_update_user(screen_name):
 
-        # TODO - fix assumption on continuously new tweets
-        tweets = twitter_user.timeline(count=200, exclude_replies=True, include_rts=False, tweet_mode="extended")
+    twitter_user = TWITTER.get_user(screen_name)
+    print("USER:", screen_name, type(twitter_user))
 
-        if tweets:
-            db_user.newest_tweet_id = tweets[0].id
+    statuses = TWITTER.user_timeline(screen_name, tweet_mode="extended", count=150, exclude_replies=True, include_rts=False)
+    print("STATUSES COUNT:", len(statuses))
 
-        for tweet in tweets:
-            vectorized_tweet = vectorize_tweet(tweet.full_text)
-            db_tweet = Tweet(id=tweet.id, text=tweet.full_text, vect=vectorized_tweet)
-            db_user.tweets.append(db_tweet)
-            DB.session.add(db_tweet)
+    # get existing user from the db or initialize a new one:
+    db_user = User.query.get(twitter_user.id) or User(id=twitter_user.id)
+    db_user.name = screen_name
+    if statuses:
+        db_user.newest_tweet_id = statuses[0].id
+    DB.session.add(db_user)
+    DB.session.commit()
 
-    except Exception as e:
-        print("Error processing {}: {}".format(username, e))
-        raise e
+    for status in statuses:
+        print(status.full_text)
+        # get existing tweet from the db or initialize a new one:
+        db_tweet = Tweet.query.get(status.id) or Tweet(id=status.id)
+        db_tweet.user_id = status.author.id # or db_user.id
+        db_tweet.text = status.full_text
+        db_tweet.vect = vectorize_tweet(status.full_text)
+        DB.session.add(db_tweet)
 
-    else:
-        DB.session.commit()
+    DB.session.commit()
