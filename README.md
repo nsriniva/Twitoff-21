@@ -61,7 +61,7 @@ Obtain [Twitter API Keys](https://developer.twitter.com), then configure environ
 ```sh
 # the ".env" file
 
-ENV="development"
+FLASK_ENV="development"
 DATABASE_URL="sqlite:///db.sqlite3"
 
 TWITTER_API_KEY="______________"
@@ -73,3 +73,5 @@ TWITTER_API_KEY_SECRET="__________"
 ```sh
 FLASK_APP=twitoff flask run
 ```
+
+## [Deploying](/DEPLOYING.md)
