@@ -35,6 +35,12 @@ git push heroku main
 # git push heroku my-branch:main
 ```
 
+```sh
+pipenv --python 3.7
+```
+
+
+
 ## Database Management
 
 Provision the database:
