@@ -12,6 +12,7 @@ jinja2 = "*"
 tweepy = "*"
 spacy = "*"
 python-dotenv = "*"
+scikit-learn = "*"
 
 [requires]
 python_version = "3.8"
