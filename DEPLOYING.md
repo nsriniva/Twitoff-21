@@ -30,7 +30,7 @@ heroku config:set TWITTER_API_KEY_SECRET="__________"
 
 ## Deploying
 
-Add python buildpack before deploying
+Add python buildpack before deploying?
 
 New pipfile?
 
@@ -42,6 +42,15 @@ pipenv install gunicorn psycopg2-binary
 ```
 
 
+Using requirements.txt?
+
+```sh
+pipenv lock --requirements > requirements.txt
+```
+
+Different version?
+
+No spacy?
 
 
 
