@@ -13,6 +13,7 @@ tweepy = "*"
 spacy = "*"
 python-dotenv = "*"
 scikit-learn = "*"
+flask-migrate = "*"
 
 [requires]
 python_version = "3.8"
