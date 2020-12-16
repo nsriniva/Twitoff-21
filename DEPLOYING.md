@@ -30,13 +30,26 @@ heroku config:set TWITTER_API_KEY_SECRET="__________"
 
 ## Deploying
 
+Add python buildpack before deploying
+
+New pipfile?
+
+
+```sh
+pipenv install flask flask-sqlalchemy flask-migrate
+pipenv install python-dotenv tweepy spacy
+pipenv install gunicorn psycopg2-binary
+```
+
+
+
+
+
+Deploy:
+
 ```sh
 git push heroku main
 # git push heroku my-branch:main
-```
-
-```sh
-pipenv --python 3.7
 ```
 
 
