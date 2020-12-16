@@ -2,18 +2,13 @@
 from os import getenv
 from dotenv import load_dotenv
 import tweepy  # to interact with the twitter API
-import spacy  # will use later
 from .models import DB, Tweet, User
+from .nlp_helper import vectorize_tweet
 
 load_dotenv() # actually load the env vars :-D
 
 TWITTER_AUTH = tweepy.OAuthHandler(getenv("TWITTER_API_KEY"), getenv("TWITTER_API_KEY_SECRET"))
 TWITTER = tweepy.API(TWITTER_AUTH)
-
-nlp = spacy.load("my_model")
-
-def vectorize_tweet(tweet_text):
-    return nlp(tweet_text).vector
 
 def add_or_update_user(screen_name):
 

@@ -32,6 +32,12 @@ Install NLP model(s):
 python -m spacy download en_core_web_sm
 ```
 
+Run this script to test out the NLP model:
+
+```sh
+python -m twitoff.nlp_helper
+```
+
 ### Setup the Database
 
 Using the [`Flask-Migrate` package](https://flask-migrate.readthedocs.io/en/latest/) to simplify database creation and migration:

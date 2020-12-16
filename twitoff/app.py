@@ -2,7 +2,7 @@
 
 from os import getenv
 from dotenv import load_dotenv
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect
 from .twitter import add_or_update_user
 from .models import DB, User, Tweet, migrate
 
@@ -22,6 +22,7 @@ def create_app():
 
     @app.route("/reset")
     def reset():
+        print("RESETTING THE DATABASE!")
         DB.drop_all()
         DB.create_all()
         return render_template("base.html", title="Home")
@@ -43,7 +44,9 @@ def create_app():
         for screen_name in EXAMPLE_USERS:
             print(screen_name)
             add_or_update_user(screen_name)
-        return render_template("base.html", title="Home", users=User.query.all())
+        #return render_template("base.html", title="Home", users=User.query.all())
+        #flash(f"Updated Users!", "success")
+        return redirect("/")
 
     #@app.route("/update/<screen_name>")
     #def update(screen_name=None):
