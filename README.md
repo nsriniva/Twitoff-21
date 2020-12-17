@@ -18,6 +18,14 @@ Install package dependencies from existing Pipfile:
 pipenv install
 ```
 
+> If for some reason you need to regenerate a new Pipfile from scratch:
+>
+> ```sh
+> pipenv install flask flask-sqlalchemy flask-migrate
+> pipenv install python-dotenv tweepy spacy scikit-learn
+> pipenv install gunicorn psycopg2-binary
+> ```
+
 Activate the virtual environment:
 
 ```sh
